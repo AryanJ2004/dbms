@@ -1,40 +1,91 @@
+db.stud1.insert([
+    { Name: "Amit", Marks: 80 },
+    { Name: "Amit", Marks: 90 },
+    { Name: "Shreya", Marks: 40 },
+    { Name: "Neha", Marks: 80 },
+    { Name: "Neha", Marks: 35 }
+]);
 
-db.stud1.insert([{Name:"Amit",Marks:80},{Name:"Amit",Marks:90},{Name:"Shreya",Marks:40},{Name:"Neha",Marks:80},{Name:"Neha",Marks:35}])
+db.stud1.mapReduce(
+    function() { emit(this.Name, 1); },
+    function(key, values) { return Array.sum(values); },
+    { out: "Name_Total" }
+);
 
-db.stud1.mapReduce(function(){  emit(this.Name,1)}, function(key,value){
- return Array.sum(value)}, {out:"Name_Total"}).find()
+print("Name_Total output (count per Name):");
+db.Name_Total.find();
 
-{ "_id" : "Amit", "value" : 2 }
-{ "_id" : "Neha", "value" : 2 }
-{ "_id" : "Shreya", "value" : 1 }
+print("Name_Total output sorted by value (ascending):");
+db.Name_Total.find().sort({ value: 1 });
 
-db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({value:1})
+print("Name_Total output sorted by Name (ascending):");
+db.Name_Total.find().sort({ _id: 1 });
 
-{ "_id" : "Shreya", "value" : 1 }
-{ "_id" : "Amit", "value" : 2 }
-{ "_id" : "Neha", "value" : 2 }
+print("Name_Total output (limit to 1 document):");
+db.Name_Total.find().limit(1);
 
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.sum(values); },
+    { out: "Name_Total" }
+);
 
-db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({key:1})
-{ "_id" : "Amit", "value" : 2 }
-{ "_id" : "Neha", "value" : 2 }
-{ "_id" : "Shreya", "value" : 1 }
+print("Name_Total output (total Marks per Name):");
+db.Name_Total.find();
 
-db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().limit(1)
-{ "_id" : "Amit", "value" : 2 }
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.avg(values); },
+    { out: "Name_Total" }
+);
 
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find()
-// Example- 5 Output
-{ "_id" : "Amit", "value" : 170 }
-{ "_id" : "Neha", "value" : 115 }
-{ "_id" : "Shreya", "value" : 40 }
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {out:"Name_Total"}).find()
-{ "_id" : "Amit", "value" : 85 }
-{ "_id" : "Neha", "value" : 57.5 }
-{ "_id" : "Shreya", "value" : 40 }
+print("Name_Total output (average Marks per Name):");
+db.Name_Total.find();
 
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {query:{Marks:80},out:"Name_Total"}).find()
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Name:"Amit"}, out:"a"}).find()
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)},{query:{Marks:80}, out:"a"}).find()
-db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Marks:{$gt:80}}, out:"a"}).find()
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.avg(values); },
+    {
+        query: { Marks: 80 },
+        out: "Name_Total"
+    }
+);
 
+print("Name_Total output (average Marks where Marks = 80):");
+db.Name_Total.find();
+
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.sum(values); },
+    {
+        query: { Name: "Amit" },
+        out: "Name_Total"
+    }
+);
+
+print("Name_Total output (total Marks for Name = Amit):");
+db.Name_Total.find();
+
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.sum(values); },
+    {
+        query: { Marks: 80 },
+        out: "Name_Total"
+    }
+);
+
+print("Name_Total output (total Marks where Marks = 80):");
+db.Name_Total.find();
+
+db.stud1.mapReduce(
+    function() { emit(this.Name, this.Marks); },
+    function(key, values) { return Array.sum(values); },
+    {
+        query: { Marks: { $gt: 80 } },
+        out: "Name_Total"
+    }
+);
+
+print("Name_Total output (total Marks where Marks > 80):");
+db.Name_Total.find();
