@@ -1,0 +1,61 @@
+
+import com.mongodb.*;
+public class JavaMongoProg {
+public static void main(String[] args) {
+		try {
+			MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+
+			DB db = mongoClient.getDB( "d2" );
+
+			DBCollection coll = db.createCollection("stud1",null);
+
+			BasicDBObject d1= new BasicDBObject("rno","1").append("name","Bhavana");
+			BasicDBObject d2= new BasicDBObject("rno","2").append("name","Reena");
+			BasicDBObject d3= new BasicDBObject("rno","3").append("name","Amit");
+
+			coll.insert(d1);
+			coll.insert(d2);
+			coll.insert(d3);
+			
+System.out.println("Data After Inserting 3 Document");
+
+			DBCursor cursor = coll.find();
+			while (cursor.hasNext())
+			  { 
+			System.out.println(cursor.next()); 
+			  }
+			
+
+
+
+BasicDBObject a1 = new BasicDBObject(); 
+			a1.put("name", "Bhavana"); 
+			BasicDBObject a2= new  BasicDBObject();
+			a2.put("name", "Neha"); 
+			BasicDBObject a3= new BasicDBObject(); 
+			a3.put("$set", a2); 
+			coll.update(a1, a3);
+			
+System.out.println("Data Updating record");
+			cursor = coll.find();
+			while (cursor.hasNext())
+			  { 
+			System.out.println(cursor.next()); 
+			  }
+			
+		BasicDBObject R1 = new BasicDBObject("name","Reena");
+		coll.remove(R1);
+		System.out.println("Data After deleting Reena record");
+		cursor = coll.find();
+		while (cursor.hasNext())
+		  { 
+		System.out.println(cursor.next()); 
+		  }
+		}
+
+			catch(Exception e)
+			{
+			e.printStackTrace(); 
+			}
+			}
+	}
