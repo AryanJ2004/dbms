@@ -1,0 +1,48 @@
+use Institute
+
+	db.createCollection("Students")
+
+	db.Students.insertMany([
+    { RollNo: 1, Name: "Aryan Jain", Age: 20, Branch: "Computer", Address: { City: "Pune", State: "Maharashtra" }, Hobbies: ["Coding", "Reading"] },
+    { RollNo: 2, Name: "Rahul Sharma", Age: 21, Branch: "Mechanical", Address: { City: "Nashik", State: "Maharashtra" }, Hobbies: ["Football", "Gaming"] },
+    { RollNo: 3, Name: "Sanjay Kumar", Age: 19, Branch: "Civil", Address: { City: "Pune", State: "Maharashtra" }, Hobbies: ["Music", "Sketching"] },
+    { RollNo: 4, Name: "Pooja Singh", Age: 18, Branch: "Electrical", Address: { City: "Mumbai", State: "Maharashtra" }, Hobbies: ["Dance", "Cooking"] },
+    { RollNo: 5, Name: "Aditi Verma", Age: 22, Branch: "Computer", Address: { City: "Nagpur", State: "Maharashtra" }, Hobbies: ["Photography", "Painting"] },
+    { RollNo: 6, Name: "Aarav Patel", Age: 20, Branch: "Mechanical", Address: { City: "Ahmedabad", State: "Gujarat" }, Hobbies: ["Cricket", "Reading"] },
+    { RollNo: 7, Name: "Neha Gupta", Age: 19, Branch: "Civil", Address: { City: "Nashik", State: "Maharashtra" }, Hobbies: ["Coding", "Traveling"] },
+    { RollNo: 8, Name: "Ravi Mehta", Age: 21, Branch: "Electrical", Address: { City: "Pune", State: "Maharashtra" }, Hobbies: ["Gaming", "Football"] },
+    { RollNo: 9, Name: "Aman Joshi", Age: 22, Branch: "Mechanical", Address: { City: "Surat", State: "Gujarat" }, Hobbies: ["Reading", "Traveling"] },
+    { RollNo: 10, Name: "Shruti Desai", Age: 20, Branch: "Computer", Address: { City: "Pune", State: "Maharashtra" }, Hobbies: ["Dancing", "Singing"] }
+])
+
+	db.Students.find()
+
+	db.Students.find({ Age: { $gt: 15 } })
+
+	db.Students.find().sort({ Name: 1 })
+
+db.Students.updateOne({ RollNo: 3 }, { $set: { Branch: "Computer" } })
+
+	db.Students.deleteOne({ RollNo: 1 })
+
+	db.Students.find({ Name: { $regex: 'A' } })
+
+	db.Students.countDocuments()
+
+	db.Students.find().limit(5)
+
+	db.Students.find().skip(3)
+
+	db.Students.find({ "Address.City": "Pune" }, { Name: 1, _id: 0 })
+
+	db.Students.distinct("Address.City")
+
+	db.Students.aggregate([
+    { $group: { _id: "$Address.City", studentCount: { $sum: 1 } } }
+])
+
+	db.Students.find({}, { Name: 1, _id: 0 })
+
+	db.Students.find({}, { Name: 1, Hobbies: 1, _id: 0 })
+
+	db.Students.drop()
