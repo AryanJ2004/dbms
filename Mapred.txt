@@ -1,58 +1,40 @@
 
-// Create stud1 Collection by adding some documents in it.
->db.stud1.insert([{Name:"Amit",Marks:80},{Name:"Amit",Marks:90},{Name:"Shreya",Marks:40},{Name:"Neha",Marks:80},{Name:"Neha",Marks:35}])
+db.stud1.insert([{Name:"Amit",Marks:80},{Name:"Amit",Marks:90},{Name:"Shreya",Marks:40},{Name:"Neha",Marks:80},{Name:"Neha",Marks:35}])
 
-// Example-1-Code
-> db.stud1.mapReduce(function(){  emit(this.Name,1)}, function(key,value){
+db.stud1.mapReduce(function(){  emit(this.Name,1)}, function(key,value){
  return Array.sum(value)}, {out:"Name_Total"}).find()
 
-// Example-1- Output
 { "_id" : "Amit", "value" : 2 }
 { "_id" : "Neha", "value" : 2 }
 { "_id" : "Shreya", "value" : 1 }
 
-// Example-2-code
-> db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({value:1})
+db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({value:1})
 
-// Example-2 Output
 { "_id" : "Shreya", "value" : 1 }
 { "_id" : "Amit", "value" : 2 }
 { "_id" : "Neha", "value" : 2 }
 
-// Example-3
-> db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({key:1})
-// Example-3 Output
+
+db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().sort({key:1})
 { "_id" : "Amit", "value" : 2 }
 { "_id" : "Neha", "value" : 2 }
 { "_id" : "Shreya", "value" : 1 }
 
-// Example-4
-> db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().limit(1)
-// Example-4 Output
+db.stud1.mapReduce(function(){ emit(this.Name,1)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find().limit(1)
 { "_id" : "Amit", "value" : 2 }
 
-// Example-5
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find()
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {out:"Name_Total"}).find()
 // Example- 5 Output
 { "_id" : "Amit", "value" : 170 }
 { "_id" : "Neha", "value" : 115 }
 { "_id" : "Shreya", "value" : 40 }
-// Example-6
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {out:"Name_Total"}).find()
-// Example-6- Output
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {out:"Name_Total"}).find()
 { "_id" : "Amit", "value" : 85 }
 { "_id" : "Neha", "value" : 57.5 }
 { "_id" : "Shreya", "value" : 40 }
 
-// Example-7
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {query:{Marks:80},out:"Name_Total"}).find()
-
-// Example-8
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Name:"Amit"}, out:"a"}).find()
-
-// Example-9
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)},{query:{Marks:80}, out:"a"}).find()
-
-// Example-10
-> db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Marks:{$gt:80}}, out:"a"}).find()
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.avg(value)}, {query:{Marks:80},out:"Name_Total"}).find()
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Name:"Amit"}, out:"a"}).find()
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)},{query:{Marks:80}, out:"a"}).find()
+db.stud1.mapReduce(function(){ emit(this.Name,this.Marks)}, function(key,value){ return Array.sum(value)}, {query:{Marks:{$gt:80}}, out:"a"}).find()
 
